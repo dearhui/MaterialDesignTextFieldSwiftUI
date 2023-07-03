@@ -19,11 +19,11 @@ struct ContentView: View {
                 .foregroundColor(.accentColor)
             Text("Hello, world!")
             
-            MaterialDesignTextField(name: "Name", value: $name)
+            MaterialTextField(name: "Name", value: $name)
                 .hint("Please input username")
                 .leadingIcon(Image(systemName: "person"))
             
-            MaterialDesignTextField(name: "Password",
+            MaterialTextField(name: "Password",
                                     value: $password,
                                     isSecureField: true)
             .leadingIcon(Image(systemName: "lock"))

@@ -8,7 +8,7 @@
 import SwiftUI
 import PureSwiftUI
 
-public struct MaterialDesignTextField: View {
+public struct MaterialTextField: View {
     @Environment(\.colorScheme) var colorSchema
     @Environment(\.leadingIcon) var leadingIcon: LeadingIconEnvironment.Value
     @Environment(\.isEnabled) private var isEnabled
@@ -135,28 +135,28 @@ public struct MaterialDesignTextField: View {
 struct MaterialDesignTextField_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            MaterialDesignTextField(name: "register_nick_name",
-                                    value: .constant(""),
-                                     verified: true,
-                                     focused: false)
-            MaterialDesignTextField(name: "register_nick_name",
-                                     value: .constant("disabled true"),
-                                     verified: true,
-                                     focused: false)
+            MaterialTextField(name: "register_nick_name",
+                              value: .constant(""),
+                              verified: true,
+                              focused: false)
+            MaterialTextField(name: "register_nick_name",
+                              value: .constant("disabled true"),
+                              verified: true,
+                              focused: false)
             .disabled(true)
-            MaterialDesignTextField(name: "register_nick_name",
-                                     value: .constant("123"),
-                                     verified: true,
-                                     focused: true)
-            MaterialDesignTextField(name: "name",
-                                     value: .constant("YOUR_NAME"),
-                                     verified: false,
-                                     focused: false)
+            MaterialTextField(name: "register_nick_name",
+                              value: .constant("123"),
+                              verified: true,
+                              focused: true)
+            MaterialTextField(name: "name",
+                              value: .constant("YOUR_NAME"),
+                              verified: false,
+                              focused: false)
             .hint("Please enter your password")
-            MaterialDesignTextField(name: "密碼",
-                                    value: .constant("123"), isSecureField: true,
-                                     verified: false,
-                                     focused: false)
+            MaterialTextField(name: "密碼",
+                              value: .constant("123"), isSecureField: true,
+                              verified: false,
+                              focused: false)
             .leadingIcon(Image(systemName: "house"))
             .hint("Please enter your password")
         }
