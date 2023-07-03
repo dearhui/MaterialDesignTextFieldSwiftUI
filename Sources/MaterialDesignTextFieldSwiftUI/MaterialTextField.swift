@@ -155,8 +155,8 @@ struct MaterialDesignTextField_Previews: PreviewProvider {
             .hint("Please enter your password")
             MaterialTextField(name: "密碼",
                               value: .constant("123"), isSecureField: true,
-                              verified: false,
-                              focused: false)
+                              verified: true,
+                              focused: true)
             .leadingIcon(Image(systemName: "house"))
             .hint("Please enter your password")
         }
