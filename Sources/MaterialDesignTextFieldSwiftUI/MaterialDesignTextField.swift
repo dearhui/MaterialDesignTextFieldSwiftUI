@@ -11,9 +11,9 @@ import PureSwiftUI
 public struct MaterialDesignTextField: View {
     @Environment(\.leadingIcon) var leadingIcon: LeadingIconEnvironment.Value
     @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.hint) private var hint: LocalizedStringKey?
     
     private let name: LocalizedStringKey
-    private let hint: LocalizedStringKey?
     @Binding private var value: String
     @Binding private var isSecureField: Bool
     private let verified: Bool
@@ -22,15 +22,22 @@ public struct MaterialDesignTextField: View {
     public init(name: LocalizedStringKey,
                 value: Binding<String>,
                 isSecureField: Binding<Bool> = .constant(false),
-                hint: LocalizedStringKey? = nil,
                 verified: Bool = true,
                 focused: Bool = false) {
         self.name = name
-        self.hint = hint
         self._value = value
         self._isSecureField = isSecureField
         self.verified = verified
         self.focused = focused
+    }
+    
+    public var body: some View {
+        VStack (spacing: 4) {
+            textField
+            
+            hintView
+        }
+        .animation(.easeInOut, value: isMini)
     }
     
     private var _verified: Bool {
@@ -40,14 +47,6 @@ public struct MaterialDesignTextField: View {
     
     private var isMini: Bool {
         return focused || !value.isEmpty
-    }
-    
-    public var body: some View {
-        VStack (spacing: 4) {
-            textField
-            hintView
-        }
-        .animation(.easeInOut, value: isMini)
     }
     
     private var textField: some View {
@@ -126,40 +125,35 @@ public struct MaterialDesignTextField: View {
 }
 
 
-
 struct MaterialDesignTextField_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             MaterialDesignTextField(name: "register_nick_name",
                                     value: .constant(""),
-                                     hint: "register_nick_name_hint",
                                      verified: true,
                                      focused: false)
             MaterialDesignTextField(name: "register_nick_name",
                                      value: .constant("disabled true"),
-                                     hint: "register_nick_name_hint",
                                      verified: true,
                                      focused: false)
             .disabled(true)
             MaterialDesignTextField(name: "register_nick_name",
                                      value: .constant("123"),
-                                     hint: "register_nick_name_hint",
                                      verified: true,
                                      focused: true)
-            MaterialDesignTextField(name: "register_nick_name",
-                                     value: .constant("123"),
-                                     hint: "register_nick_name_hint",
+            MaterialDesignTextField(name: "name",
+                                     value: .constant("YOUR_NAME"),
                                      verified: false,
                                      focused: false)
+            .hint("Please enter your password")
             MaterialDesignTextField(name: "密碼",
                                     value: .constant("123"), isSecureField: .constant(true),
-                                     hint: "register_nick_name_hint",
                                      verified: false,
                                      focused: false)
-            .leadingIcon(Image(systemName: "house"), color: .secondary)
+            .leadingIcon(Image(systemName: "house"))
+            .hint("Please enter your password")
         }
         .padding()
-//        .backgroundColor(.secondarySystemBackground)
     }
 }
 

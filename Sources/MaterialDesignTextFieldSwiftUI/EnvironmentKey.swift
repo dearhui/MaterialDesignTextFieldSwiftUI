@@ -11,9 +11,8 @@ public struct LeadingIconEnvironment: EnvironmentKey {
     public struct Value {
         let icon: Image?
         let color: Color
-        let size: CGFloat
         
-        static var defaultValue: Value = .init(icon: nil, color: .primary, size: 24)
+        static var defaultValue: Value = .init(icon: nil, color: .secondary)
     }
     
     public static var defaultValue: Value { .defaultValue }
@@ -26,9 +25,24 @@ extension EnvironmentValues {
     }
 }
 
-public extension MaterialDesignTextField {
-    func leadingIcon(_ icon: Image?, color: Color, size: CGFloat = 24) -> some View {
-        self.environment(\.leadingIcon, LeadingIconEnvironment.Value(icon: icon, color: color, size: size))
+public struct HintEnvironment: EnvironmentKey {
+    public static let defaultValue: LocalizedStringKey? = nil
+}
+
+extension EnvironmentValues {
+    public var hint: LocalizedStringKey? {
+        get { self[HintEnvironment.self] }
+        set { self[HintEnvironment.self] = newValue }
+    }
+}
+
+public extension View {
+    func leadingIcon(_ icon: Image?, color: Color = .secondary) -> some View {
+        self.environment(\.leadingIcon, LeadingIconEnvironment.Value(icon: icon, color: color))
+    }
+    
+    func hint(_ hint: LocalizedStringKey) -> some View {
+        self.environment(\.hint, hint)
     }
 }
 
