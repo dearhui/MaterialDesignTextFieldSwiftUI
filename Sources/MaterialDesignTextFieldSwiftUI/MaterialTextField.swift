@@ -13,25 +13,22 @@ public struct MaterialTextField: View {
     @Environment(\.leadingIcon) var leadingIcon: LeadingIconEnvironment.Value
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.hint) private var hint: LocalizedStringKey?
+    @Environment(\.trailingIcon) var trailingIcon: TrailingIconEnvironment.Value
+    @Environment(\.isSecureField) private var isSecureField: Bool
     
     private let name: LocalizedStringKey
     @Binding private var value: String
-    @State private var isSecureField: Bool
     private let verified: Bool
     private let focused: Bool
-    private var isSecureButton: Bool
     
     public init(name: LocalizedStringKey,
                 value: Binding<String>,
-                isSecureField: Bool = false,
                 verified: Bool = true,
                 focused: Bool = false) {
         self.name = name
         self._value = value
-        self._isSecureField = State(wrappedValue: isSecureField)
         self.verified = verified
         self.focused = focused
-        self.isSecureButton = isSecureField
     }
     
     public var body: some View {
@@ -68,8 +65,13 @@ public struct MaterialTextField: View {
                 label
             }
             
-            if isSecureButton {
-                eyeButton
+            if let trailingIconImage = trailingIcon.icon {
+                Button {
+                    trailingIcon.action()
+                } label: {
+                    trailingIconImage
+                        .foregroundColor(trailingIcon.color)
+                }
             }
         }
         .padding()
@@ -120,17 +122,7 @@ public struct MaterialTextField: View {
                 .opacity( isHintDisplay ? 1 : 0)
         }
     }
-    
-    private var eyeButton: some View {
-        Button {
-            isSecureField.toggle()
-        } label: {
-            Image(systemName: isSecureField ? "eye.slash.fill" : "eye.fill")
-                .foregroundColor(.secondary)
-        }
-    }
 }
-
 
 struct MaterialDesignTextField_Previews: PreviewProvider {
     static var previews: some View {
@@ -154,11 +146,12 @@ struct MaterialDesignTextField_Previews: PreviewProvider {
                               focused: false)
             .hint("Please enter your password")
             MaterialTextField(name: "密碼",
-                              value: .constant("123"), isSecureField: true,
+                              value: .constant("123"),
                               verified: true,
                               focused: true)
             .leadingIcon(Image(systemName: "house"))
             .hint("Please enter your password")
+            .trailingIcon(Image(systemName: "eye.fill"))
         }
         .padding()
     }

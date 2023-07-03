@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var name: String = ""
     @State private var password: String = ""
     
+    @State private var isSecured: Bool = true
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -24,9 +26,9 @@ struct ContentView: View {
                 .leadingIcon(Image(systemName: "person"))
             
             MaterialTextField(name: "Password",
-                                    value: $password,
-                                    isSecureField: true)
+                                    value: $password)
             .leadingIcon(Image(systemName: "lock"))
+            .isSecured($isSecured)
         }
         .padding()
     }
