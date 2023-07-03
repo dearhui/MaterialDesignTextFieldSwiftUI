@@ -11,7 +11,6 @@ import MaterialDesignTextFieldSwiftUI
 struct ContentView: View {
     @State private var name: String = ""
     @State private var password: String = ""
-    @State private var isSecureField: Bool = true
     
     var body: some View {
         VStack {
@@ -22,10 +21,11 @@ struct ContentView: View {
             
             MaterialDesignTextField(name: "Name", value: $name)
                 .hint("Please input username")
+                .leadingIcon(Image(systemName: "person"))
             
             MaterialDesignTextField(name: "Password",
                                     value: $password,
-                                    isSecureField: $isSecureField)
+                                    isSecureField: true)
         }
         .padding()
     }

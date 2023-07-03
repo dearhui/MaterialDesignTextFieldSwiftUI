@@ -9,26 +9,29 @@ import SwiftUI
 import PureSwiftUI
 
 public struct MaterialDesignTextField: View {
+    @Environment(\.colorScheme) var colorSchema
     @Environment(\.leadingIcon) var leadingIcon: LeadingIconEnvironment.Value
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.hint) private var hint: LocalizedStringKey?
     
     private let name: LocalizedStringKey
     @Binding private var value: String
-    @Binding private var isSecureField: Bool
+    @State private var isSecureField: Bool
     private let verified: Bool
     private let focused: Bool
+    private var isSecureButton: Bool
     
     public init(name: LocalizedStringKey,
                 value: Binding<String>,
-                isSecureField: Binding<Bool> = .constant(false),
+                isSecureField: Bool = false,
                 verified: Bool = true,
                 focused: Bool = false) {
         self.name = name
         self._value = value
-        self._isSecureField = isSecureField
+        self._isSecureField = State(wrappedValue: isSecureField)
         self.verified = verified
         self.focused = focused
+        self.isSecureButton = isSecureField
     }
     
     public var body: some View {
@@ -49,6 +52,10 @@ public struct MaterialDesignTextField: View {
         return focused || !value.isEmpty
     }
     
+    private var isHintDisplay: Bool {
+        return (focused || !_verified)
+    }
+    
     private var textField: some View {
         HStack {
             if let icon = leadingIcon.icon {
@@ -61,7 +68,7 @@ public struct MaterialDesignTextField: View {
                 label
             }
             
-            if isSecureField {
+            if isSecureButton {
                 eyeButton
             }
         }
@@ -97,7 +104,7 @@ public struct MaterialDesignTextField: View {
         RoundedRectangle(cornerRadius: 8)
             .strokeBorder(_verified ? Color.clear : Color(UIColor.systemPink))
             .background(
-                Color(UIColor.tertiarySystemBackground)
+                Color(colorSchema == .dark ? UIColor.tertiarySystemBackground : .secondarySystemBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             )
     }
@@ -110,7 +117,7 @@ public struct MaterialDesignTextField: View {
                 .greedyWidth(.leading)
                 .padding(.horizontal)
                 .foregroundColor(_verified ? Color(UIColor.secondaryLabel) : Color(UIColor.systemPink))
-                .opacity( (focused || !_verified) ? 1 : 0)
+                .opacity( isHintDisplay ? 1 : 0)
         }
     }
     
@@ -147,7 +154,7 @@ struct MaterialDesignTextField_Previews: PreviewProvider {
                                      focused: false)
             .hint("Please enter your password")
             MaterialDesignTextField(name: "密碼",
-                                    value: .constant("123"), isSecureField: .constant(true),
+                                    value: .constant("123"), isSecureField: true,
                                      verified: false,
                                      focused: false)
             .leadingIcon(Image(systemName: "house"))
