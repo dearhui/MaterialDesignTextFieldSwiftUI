@@ -26,6 +26,7 @@ struct ContentView: View {
             MaterialDesignTextField(name: "Password",
                                     value: $password,
                                     isSecureField: true)
+            .leadingIcon(Image(systemName: "lock"))
         }
         .padding()
     }
