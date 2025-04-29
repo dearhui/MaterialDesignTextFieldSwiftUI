@@ -98,7 +98,9 @@ public struct MaterialTextField: View {
             .greedyWidth(.leading)
             .font(isMini ? .caption : .body)
             .yOffsetIf(isMini, -12)
-            .foregroundColor(isMini ? .accentColor : Color(UIColor.placeholderText))
+            .foregroundColor(isEnabled ? 
+                            (isMini ? .accentColor : Color(UIColor.placeholderText)) : 
+                            Color(UIColor.tertiaryLabel))
             .zIndex(-1)
     }
     
@@ -106,7 +108,9 @@ public struct MaterialTextField: View {
         RoundedRectangle(cornerRadius: 8)
             .strokeBorder(_verified ? Color.clear : Color(UIColor.systemPink))
             .background(
-                Color(colorSchema == .dark ? UIColor.tertiarySystemBackground : .secondarySystemBackground)
+                Color(colorSchema == .dark ? 
+                      (isEnabled ? UIColor.tertiarySystemBackground : UIColor.systemGray5) : 
+                      (isEnabled ? .secondarySystemBackground : UIColor.systemGray5))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             )
     }
