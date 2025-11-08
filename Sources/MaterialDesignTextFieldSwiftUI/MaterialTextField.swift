@@ -15,20 +15,23 @@ public struct MaterialTextField: View {
     @Environment(\.hint) private var hint: LocalizedStringKey?
     @Environment(\.trailingIcon) var trailingIcon: TrailingIconEnvironment.Value
     @Environment(\.isSecureField) private var isSecureField: Bool
-    
+
     private let name: LocalizedStringKey
     @Binding private var value: String
     private let verified: Bool
     private let focused: Bool
-    
+    private let accentColor: Color
+
     public init(name: LocalizedStringKey,
                 value: Binding<String>,
                 verified: Bool = true,
-                focused: Bool = false) {
+                focused: Bool = false,
+                accentColor: Color = Color(UIColor.systemBlue)) {
         self.name = name
         self._value = value
         self.verified = verified
         self.focused = focused
+        self.accentColor = accentColor
     }
     
     public var body: some View {
@@ -98,8 +101,8 @@ public struct MaterialTextField: View {
             .greedyWidth(.leading)
             .font(isMini ? .caption : .body)
             .yOffsetIf(isMini, -12)
-            .foregroundColor(isEnabled ? 
-                            (isMini ? .accentColor : Color(UIColor.placeholderText)) : 
+            .foregroundColor(isEnabled ?
+                            (isMini ? accentColor : Color(UIColor.placeholderText)) :
                             Color(UIColor.tertiaryLabel))
             .zIndex(-1)
     }
